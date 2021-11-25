@@ -92,6 +92,7 @@
     killall
     niv
     rxvt_unicode
+    vim
     xclip
 
     # I actually don't need this for any particular reason, especially
