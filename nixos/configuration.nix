@@ -1,24 +1,26 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
+{ config, pkgs, currentSystem, ... }:
 
 {
+  # We require 5.14+ for VMware Fusion on M1.
+  boot.kernelPackages = pkgs.linuxPackages_5_15;
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
+  # We expect to run the VM on hidpi machines.
+  # hardware.video.hidpi.enable = true;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # Define your hostname.
+  networking.hostName = "vm";
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Australia/Sydney";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -31,17 +33,40 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
   # };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
+  # setup windowing environment
+  services.xserver = {
+    enable = true;
+    layout = "us";
+    dpi = 220;
 
+    desktopManager = {
+      xterm.enable = false;
+      wallpaper.mode = "scale";
+    };
 
-  
+    displayManager = {
+      defaultSession = "none+i3";
+      lightdm.enable = true;
+
+      # AARCH64: For now, on Apple Silicon, we must manually set the
+      # display resolution. This is a known issue with VMware Fusion.
+      sessionCommands = ''
+        ${pkgs.xlibs.xset}/bin/xset r rate 200 40
+      '' + (if currentSystem == "aarch64-linux" then ''
+        ${pkgs.xorg.xrandr}/bin/xrandr -s '2880x1800'
+      '' else "");
+    };
+
+    windowManager = {
+      i3.enable = true;
+    };
+  }
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -103,7 +128,7 @@ nix.package = pkgs.nixUnstable;
  		services.openssh.passwordAuthentication = true;
  		services.openssh.permitRootLogin = "yes";
  		users.users.root.initialPassword = "root";
- 	
+
 
 }
 
