@@ -1,4 +1,4 @@
-{ config, pkgs, currentSystem, ... }:
+{ config, pkgs, ... }:
 
 {
   # We require 5.14+ for VMware Fusion on M1.
@@ -58,15 +58,14 @@
       # display resolution. This is a known issue with VMware Fusion.
       sessionCommands = ''
         ${pkgs.xlibs.xset}/bin/xset r rate 200 40
-      '' + (if currentSystem == "aarch64-linux" then ''
         ${pkgs.xorg.xrandr}/bin/xrandr -s '2880x1800'
-      '' else "");
+      '';
     };
 
     windowManager = {
       i3.enable = true;
     };
-  }
+  };
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -122,12 +121,12 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
-nix.package = pkgs.nixUnstable;
- 		nix.extraOptions = "experimental-features = nix-command flakes";
-   			services.openssh.enable = true;
- 		services.openssh.passwordAuthentication = true;
- 		services.openssh.permitRootLogin = "yes";
- 		users.users.root.initialPassword = "root";
+  nix.package = pkgs.nixUnstable;
+  nix.extraOptions = "experimental-features = nix-command flakes";
+  services.openssh.enable = true;
+  services.openssh.passwordAuthentication = true;
+  services.openssh.permitRootLogin = "yes";
+  users.users.root.initialPassword = "root";
 
 
 }
