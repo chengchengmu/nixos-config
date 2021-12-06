@@ -95,8 +95,13 @@ vm/copy:
 # have to run vm/copy before.
 vm/switch:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
-		sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake \"/nix-config#${NIXNAME}\" \
+		sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch -I /nix-config/nixos/configuration/nix \
 	"
+
+switch:
+	make vm/copy
+	make vm/switch
+
 
 # Build an ISO image
 iso/nixos.iso:
