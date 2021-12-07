@@ -14,13 +14,14 @@ NIXNAME ?= vm-intel
 
 # SSH options that are used. These aren't meant to be overridden but are
 # reused a lot so we just store them up here.
-SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t
+# SSH_OPTIONS=-o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t
+SSH_OPTIONS=-o PubkeyAuthentication=yes -o StrictHostKeyChecking=no -t
 
-switch:
-	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}"
+# switch:
+	# sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}"
 
-test:
-	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild test --flake ".#$(NIXNAME)"
+# test:
+	# sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild test --flake ".#$(NIXNAME)"
 
 # bootstrap a brand new VM. The VM should have NixOS ISO on the CD drive
 # and just set the password of the root user to "root". This will install
@@ -97,11 +98,12 @@ vm/switch:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
 		sudo NIXOS_CONFIG=/nix-config/nixos/configuration.nix NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch \
 	"
+test:
+	sudo NIXOS_CONFIG=/nix-config/nixos/configuration.nix NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild test
 
 switch:
 	make vm/copy
 	make vm/switch
-
 
 # Build an ISO image
 iso/nixos.iso:

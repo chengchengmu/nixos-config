@@ -13,18 +13,18 @@ let
   xf86inputvmmouse = pkgs.xorg.xf86inputvmmouse;
 in
 {
-  imports = [
-    (mkRenamedOptionModule [ "services" "vmwareGuest" ] [ "virtualisation" "vmware" "guest" ])
-  ];
+  # imports = [
+    # (mkRenamedOptionModule [ "services" "vmwareGuest" ] [ "virtualisation" "vmware" "guest" ])
+  # ];
 
-  options.virtualisation.vmware.guest = {
-    enable = mkEnableOption "VMWare Guest Support";
-    headless = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether to disable X11-related features.";
-    };
-  };
+  # options.virtualisation.vmware.guest = {
+  #   # enable = mkEnableOption "VMWare Guest Support";
+  #   headless = mkOption {
+  #     type = types.bool;
+  #     default = false;
+  #     description = "Whether to disable X11-related features.";
+  #   };
+  # };
 
   config = mkIf cfg.enable {
     assertions = [ {
