@@ -46,13 +46,13 @@ let sources = import ../../nix/sources.nix; in {
   xdg.configFile."rofi/config.rasi".text = builtins.readFile ./rofi;
 
   # tree-sitter parsers
-  xdg.configFile."nvim/parser/proto.so".source = "${pkgs.tree-sitter-proto}/parser";
-  xdg.configFile."nvim/queries/proto/folds.scm".source =
-    "${sources.tree-sitter-proto}/queries/folds.scm";
-  xdg.configFile."nvim/queries/proto/highlights.scm".source =
-    "${sources.tree-sitter-proto}/queries/highlights.scm";
-  xdg.configFile."nvim/queries/proto/textobjects.scm".source =
-    ./textobjects.scm;
+  # xdg.configFile."nvim/parser/proto.so".source = "${pkgs.tree-sitter-proto}/parser";
+  # xdg.configFile."nvim/queries/proto/folds.scm".source =
+    # "${sources.tree-sitter-proto}/queries/folds.scm";
+  # xdg.configFile."nvim/queries/proto/highlights.scm".source =
+    # "${sources.tree-sitter-proto}/queries/highlights.scm";
+  # xdg.configFile."nvim/queries/proto/textobjects.scm".source =
+    # ./textobjects.scm;
 
   #---------------------------------------------------------------------
   # Programs
@@ -217,40 +217,40 @@ let sources = import ../../nix/sources.nix; in {
     };
   };
 
-  programs.neovim = {
-    enable = true;
-    package = pkgs.neovim-nightly;
+  # programs.neovim = {
+  #   enable = true;
+  #   package = pkgs.neovim-nightly;
 
-    plugins = with pkgs; [
-      customVim.vim-cue
-      customVim.vim-fish
-      customVim.vim-fugitive
-      customVim.vim-misc
-      customVim.vim-pgsql
-      customVim.vim-tla
-      customVim.vim-zig
-      customVim.pigeon
-      customVim.AfterColors
+  #   plugins = with pkgs; [
+  #     # customVim.vim-cue
+  #     # customVim.vim-fish
+  #     # customVim.vim-fugitive
+  #     # customVim.vim-misc
+  #     # customVim.vim-pgsql
+  #     # customVim.vim-tla
+  #     # customVim.vim-zig
+  #     # customVim.pigeon
+  #     # customVim.AfterColors
 
-      customVim.vim-nord
-      customVim.nvim-lspconfig
-      customVim.nvim-treesitter
-      customVim.nvim-treesitter-playground
-      customVim.nvim-treesitter-textobjects
+  #     # customVim.vim-nord
+  #     # customVim.nvim-lspconfig
+  #     # customVim.nvim-treesitter
+  #     # customVim.nvim-treesitter-playground
+  #     # customVim.nvim-treesitter-textobjects
 
-      vimPlugins.ctrlp
-      vimPlugins.vim-airline
-      vimPlugins.vim-airline-themes
-      vimPlugins.vim-eunuch
-      vimPlugins.vim-gitgutter
+  #     vimPlugins.ctrlp
+  #     vimPlugins.vim-airline
+  #     vimPlugins.vim-airline-themes
+  #     vimPlugins.vim-eunuch
+  #     vimPlugins.vim-gitgutter
 
-      vimPlugins.vim-markdown
-      vimPlugins.vim-nix
-      vimPlugins.typescript-vim
-    ];
+  #     vimPlugins.vim-markdown
+  #     vimPlugins.vim-nix
+  #     vimPlugins.typescript-vim
+  #   ];
 
-    extraConfig = (import ./vim-config.nix) { inherit sources; };
-  };
+  #   extraConfig = (import ./vim-config.nix) { inherit sources; };
+  # };
 
   services.gpg-agent = {
     enable = true;

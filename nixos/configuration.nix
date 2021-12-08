@@ -10,6 +10,7 @@
       # VMware guest additionals
       ../modules/vmware-guest.nix
       <home-manager/nixos>
+      ../users/chengchengmu/nixos.nix
     ];
 
   # We expect to run the VM on hidpi machines.
